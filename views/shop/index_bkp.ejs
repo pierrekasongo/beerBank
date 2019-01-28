@@ -1,0 +1,51 @@
+<%- include('../includes/head.ejs') %>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                    <% if (beers.length > 0) { %>
+                        <div class="grid">
+                            <% for (let beer of beers) { %>
+                                <article class="card product-item">
+                                    <header class="card__header">
+                                        <div class="card__star">
+                                            <a href="/add-to-favorite">
+                                                    <img src="/img/star.png" alt="<%= beer.name %>">
+                                            </a>
+                                        </div>
+                                        <div class="card__image">
+                                            <a href="/show-details/<%= beer.id %>">
+                                                    <img src="<%= beer.image_url %>" alt="<%= beer.name %>">
+                                            </a>         
+                                        </div> 
+                                    </header>
+                                    <h1 class="product__title">
+                                            <%= beer.name %>
+                                    </h1>
+                                    <div class="card__content">
+                                        <p class="product__description">
+                                            <%= beer.tagline %>
+                                        </p>
+                                    </div>
+                                   
+                                </article>
+                                <% } %>
+                        </div>
+                        
+                        <div class="big-box"><h1>Page 2</h1></div>
+                    
+                        <div class="page-load-status">
+                                <div class="loader-ellips infinite-scroll-request">
+                                  <span class="loader-ellips__dot"></span>
+                                  <span class="loader-ellips__dot"></span>
+                                  <span class="loader-ellips__dot"></span>
+                                  <span class="loader-ellips__dot"></span>
+                                </div>
+                                <p class="infinite-scroll-last">End of content</p>
+                                <p class="infinite-scroll-error">No more pages to load</p>
+                    </div>
+                    <% } else { %>
+                        <h1>No beer Found!</h1>
+                    <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>

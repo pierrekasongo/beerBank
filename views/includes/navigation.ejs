@@ -1,0 +1,29 @@
+<div class="backdrop"></div>
+<header class="main-header">
+    <nav class="main-header__nav">
+        
+        <ul class="main-header__item-list">
+                <li class="main-header__item">
+                    <a class="<%= path === '/' ? 'active' : '' %>" href="/">HOME</a>
+                </li>
+                <li class="main-header__item">
+                    <a class="<%= path === '/favorite' ? 'active' : '' %>" href="/favorite">FAVORITE</a>
+                </li>
+        </ul>
+        
+        <div class="main-header__search">
+            <div class="main-header-search__title">
+                    <h2>The Beer Bank</h2>
+                    <p>Find your favorite beer here</p>
+            </div>
+            <form action="/search" method="POST">
+                <input type="text" 
+                    placeholder="Search for beer name" 
+                    name="beer" id="search-input" 
+                    size="50" onkeyup="searchBeer()">
+            </form>
+        </div>
+    </nav>
+</header>
+    
+</nav>
