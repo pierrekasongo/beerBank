@@ -7,21 +7,27 @@
                     <a class="<%= path === '/' ? 'active' : '' %>" href="/">HOME</a>
                 </li>
                 <li class="main-header__item">
-                    <a class="<%= path === '/favorite' ? 'active' : '' %>" href="/favorite">FAVORITE</a>
+                    <a class="<%= path === '/favorite' ? 'active' : '' %>" href="/favorite">FAVOURITE</a>                 
                 </li>
         </ul>
         
         <div class="main-header__search">
             <div class="main-header-search__title">
-                    <h2>The Beer Bank</h2>
+                    <h3>The Beer Bank</h3>
                     <p>Find your favorite beer here</p>
             </div>
-            <form action="/search" method="POST">
+            <% if(path === '/') { %>
                 <input type="text" 
-                    placeholder="Search for beer name" 
-                    name="beer" id="search-input" 
-                    size="50" onkeyup="searchBeer()">
-            </form>
+                            placeholder="Search for beer name" 
+                            name="beer"
+                            id="search-input" 
+                            size="50"/>
+            <% } %>
+            <% if(path === '/' || path === '/search-result') { %>
+                <div class="advanced-search">
+                    <a href="/advanced-search">Advanced search</a>
+                </div>
+            <% } %>
         </div>
     </nav>
 </header>
