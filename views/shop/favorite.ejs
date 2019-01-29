@@ -1,11 +1,18 @@
 <%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/css/product.css">
     </head>
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-
             <main>
+                <div class="loader-container-big" id='beer-loader' style='display: none;'>
+                    <img class="loader-waiting" />
+                </div>
+                <div class="grid"></div>
                 
+                <div class="info" id="info" style='display: none;'>
+                        No favorite found!
+                </div>
             </main>
             <%- include('../includes/end.ejs') %>
+                <script src="utils.js"></script>
+                <script src="favorite.js"></script>
