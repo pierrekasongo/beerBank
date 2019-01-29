@@ -1,15 +1,17 @@
 <%- include('../includes/head.ejs') %>
+    </head>
     <body>
         <%- include('../includes/navigation.ejs') %>
             <main>
-                <div class="modal">
-                    
+                <div class="loader-container-big" id='beer-loader' style='display: none;'>
+                    <img class="loader-waiting"/>
                 </div>
-
+                <div class="modal">      
+                </div>
                 <div class="grid">
-                    <div id='beer-loader' style='display: none;'>
-                        <img src='/img/loading.gif'>
-                    </div>
+                    
                 </div>
             </main>
         <%- include('../includes/end.ejs') %>
+        <script src="utils.js"></script>
+        <script src="home.js"></script>
