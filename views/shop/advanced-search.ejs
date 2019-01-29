@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+    
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <div class="form-container">
+                    <form id="submit" method="post" action="/advanced-search">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="number" name="max_ibu"  placeholder="Max IBU">
+                                </td>
+                                <td>
+                                    <input type="number" name="max_abv" placeholder="Max ABV">
+                                </td>
+                                <td>
+                                    <input type="number" name="max_ebc" placeholder="Max EBC">
+                                </td>
+                                <td align="right"><label for="beforeDate">Brewed before :</label></td>
+                                <td>
+                                    <input type="text" name="brewed_before" placeholder="MM-YYYY"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="number" name="min_ibu" placeholder="Min IBU">
+                                </td>
+                                <td>
+                                    <input type="number" name="min_abv" placeholder="Min ABV">
+                                </td>
+                                <td>
+                                    <input type="number" name="min_ebc" placeholder="Min EBC">
+                                </td>
+                                <td align="right"><label for="afterDate">Brewed after :</label></td>
+                                <td>
+                                    <input type="text"  name="brewed_after" placeholder="MM-YYYY"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    <input class="btn-search" type="submit"  id="submit" value="Search">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <hr class="form-separator">
+                </div>
+            </main>
+            <%- include('../includes/end.ejs') %>
+            <!--<script src="advanced-search.js"></script>-->
