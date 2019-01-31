@@ -21,7 +21,6 @@ var loadBeers = (page) => {
     type: 'get',
 
     beforeSend: function () {
-
       $("#beer-loader").show();
     },
     success: function (obj) {
@@ -48,12 +47,16 @@ var appendToPage = (beers, clearFist) => {
   if (clearFist) {
     $(".grid").empty();
   }
-  
+
   for (let i = 0; i < count; i++) {
 
     let beer = beers[i];
 
     let content = BEER_BOX;
+
+    content = content.replace("{beer_css_class}", IS_NOT_FAVORITE_CSS_CLASS);
+
+    content = content.replace("{beer_function_name}", IS_NOT_FAVORITE_FUNCTION);
 
     content = content.replace("{beer_id}", beer.id);
 
@@ -114,93 +117,140 @@ var searchBeer = () => {
   });
 }
 
-var showBeerDetails = (id, event) => {
+var showBeerDetails =(id,event) => {
 
-  $('.modal').empty();
-
-  $('.modal').append(
-    '<div id="beer-detail-loader" style="display: none;">'+
-          '<img class="loader-waiting" />'+
-    '</div>'
-  ).modal();
+  $('modal').empty();
+      
+      $('.modal').append(
+        '<div id="beer-detail-loader" style="display: none;">'+
+              '<img class="loader-waiting" />'+
+        '</div>'
+      ).modal();
 
   $("#beer-detail-loader").show();
 
-  let randomBeers = "";
+  $.ajax({ //Now load the selected beer details
 
-  for (let i = 0; i < RANDOM_BEERS; i++) {
+    url: '/get-details/'+id,
 
-    var ajaxResp = $.ajax({ //Request for 3 random beers
-      url: "https://api.punkapi.com/v2/beers/random",
-      type: "get",
-    })
-      .done(function (data) {
+    type: 'get',
 
-        let random = data[0];
+    beforeSend: function () {
+    },
+    success: function (obj) {
 
-        randomBeers += '<div class="other-title__item">' +
-          '<img class="" src="' + random.image_url + '" />' +
-          '<h5>' + random.name + '</h5>' +
-          '</div>'
+    },
+    complete: function (data) {
 
-        if (i == 2) {
+      let beer = JSON.parse(data.responseJSON)[0];
+
+      let foodPairing = beer.food_pairing.join("<li>");
+
+      //$("#beer-detail-loader").hide();
+
+      $('.modal').empty();
+
+      let content = BEER_DIALOG;
+
+      content = content.replace("{beer_image}", beer.image_url);
+
+      content = content.replace("{beer_name}", beer.name);
+
+      content = content.replace("{beer_tagline}", beer.tagline);
+
+      content = content.replace("{beer_ibu}", beer.ibu);
+
+      content = content.replace("{beer_abv}", beer.abv);
+
+      content = content.replace("{beer_ebc}", beer.ebc);
+
+      content = content.replace("{beer_description}", beer.description);
+
+      content = content.replace("{beer_pairing_food}", foodPairing);
+    
+      let count=0;
+      //Request for 3 Random beers
+      let randomBeers = "";
+      $('.modal').append(
+        '<div id="beer-detail-loader" style="display: none;">'+
+              '<img class="loader-waiting" />'+
+        '</div>'
+      ).modal();
+      
+  $("#beer-detail-loader").show();
+
+      for (let i = 0; i < RANDOM_BEERS; i++) {
+
+        $.ajax({ 
+
+          url: "/get-random-beer",
           
-          $.ajax({ //Now load the selected beer details
+          type: "get",
 
-            url: 'https://api.punkapi.com/v2/beers/' + id,
+        }).done(function (data) {
 
-            type: 'get',
+            let random = JSON.parse(data)[0];
 
-            beforeSend: function () {
+            randomBeers += '<div class="other-title__item">' +
+              '<img class="" src="' + random.image_url + '" />' +
+              '<h5>' + random.name + '</h5>' +
+              '</div>';
+          }).always(function(){
 
-            },
-            success: function (obj) {
+             count++;
 
-            },
-            complete: function (data) {
+             if(count === 3){
 
-              let beer = data.responseJSON[0];
+               content = content.replace("{beer_randoms}", randomBeers);
 
-              let foodPairing = beer.food_pairing.join("<li>");
+               $("#beer-detail-loader").hide();
 
-              $("#beer-detail-loader").hide();
+               $('modal').empty();
 
-              $('.modal').empty();
+                $('.modal').append(content).modal();
+             }
 
-              let content = BEER_DETAIL;
-
-              content = content.replace("{beer_image}", beer.image_url);
-
-              content = content.replace("{beer_name}", beer.name);
-
-              content = content.replace("{beer_tagline}", beer.tagline);
-
-              content = content.replace("{beer_ibu}", beer.ibu);
-
-              content = content.replace("{beer_abv}", beer.abv);
-
-              content = content.replace("{beer_ebc}", beer.ebc);
-
-              content = content.replace("{beer_description}", beer.description);
-
-              content = content.replace("{beer_pairing_food}", foodPairing);
-
-              content = content.replace("{beer_randoms}", randomBeers);
-
-              $('.modal').append(content).modal();
-              $("#loader").hide();
-            }
-          });
-        }
-      })
-      .fail(function () {
-        console.log("error");
-      })
-      .always(function () {
-        console.log('complete');
-      });
-
-  }//END LOOP
+          })
+      }//END LOOP
+      
+    }
+  });
 }
 
+var addToFavorite = (beerId) => {
+
+  $.ajax({
+
+    url: '/add-to-favorite',
+
+    type: 'post',
+
+    data: { beerId: beerId },
+
+    beforeSend: function () {
+
+      $("#beer-loader").show();
+    },
+    success: function (obj) {
+    },
+    complete: function (data) {
+
+      let res=data.statusText;
+
+      $("#beer-loader").hide();
+
+      if(res == 'See Other'){
+        $('.modal').empty();
+        $('.modal').append(
+          '<div class="info-dialog">'+
+                '<p>This beer is already available in your favorite!</p>'+
+          '</div>'
+        ).modal();
+        
+      }else{
+        window.location.replace("/favorite");
+      }
+    }
+  });
+}
 
