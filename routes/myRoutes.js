@@ -16,7 +16,7 @@ router.get('/get-favorites', myController.getFavorites);
 
 router.get('/get-details/:beerId',myController.getDetails);
 
-router.get('/add-to-favorite/:beerId',myController.addToFavorite);
+router.post('/add-to-favorite',myController.addToFavorite);
 
 router.post('/remove-from-favorite',myController.removeFromFavorite);
 
@@ -24,9 +24,9 @@ router.get('/search-by-name/:beerName',myController.searchByName);
 
 router.get('/advanced-search',myController.getAdvancedSearch);
 
-router.get('/get-random-beer',myController.getRandomBeer);
-
 router.post('/advanced-search',myController.postAdvancedSearch);
+
+router.get('/get-random-beer',myController.getRandomBeer);
 
 router.get('/:page', myController.getPaginated);
 
