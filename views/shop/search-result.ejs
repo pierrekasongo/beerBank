@@ -19,7 +19,7 @@
                                     <header class="card__header">
                                         <div class="card__star">
                                             <a href="/add-to-favorite">
-                                                <img src="/img/star.png" alt="<%= beer.name %>">
+                                                <img src="/img/star-black.png" alt="<%= beer.name %>">
                                             </a>
                                         </div>
                                         <div class="card__image">
@@ -36,12 +36,13 @@
                                             <%= beer.tagline %>
                                         </p>
                                     </div>
-
                                 </article>
                                 <% } %>
                         </div>
                         <% }else { %>
-                            <h1 class="no-favorite">No result found!</h1>
+                            <div class="info">
+                                    No result matches your search criteria!
+                            </div>
                         <% } %>
             </main>
             <%- include('../includes/end.ejs') %>
