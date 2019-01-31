@@ -16,7 +16,6 @@ app.set('views', 'views');
 
 const Routes = require('./routes/myRoutes');
 
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views/js')));
@@ -25,13 +24,14 @@ app.use(session(
     {
         name:'beer_bank_session_cookie',
         secret: 'c@pv66in0',
-        resave: false, // Force save of session for each request.
-        saveUninitialized: false, // Save a session that is new, but has not been modified
+        resave: false, 
+        saveUninitialized: false,
         store: new FileStore(),
     }
 ));
 
 app.use(Routes);
+
 
 app.listen(3000, () => {
     console.log("Listening on port 3000");
