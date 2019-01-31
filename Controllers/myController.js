@@ -53,7 +53,7 @@ exports.getPaginated = (req, res) => {
 exports.loadFavoritePage = (req,res) => {
 
   res.render('shop/favorite', {
-    
+
     pageTitle: 'My Favorites',
 
     path: '/favorite'
@@ -61,6 +61,9 @@ exports.loadFavoritePage = (req,res) => {
 }
 
 exports.getFavorites = (req, res) => {
+
+  if(!req.session.favorites)
+    req.session.favorites=[];
 
   let beerIds = req.session.favorites.join("|");
 
@@ -75,52 +78,37 @@ exports.getFavorites = (req, res) => {
 
 exports.addToFavorite = (req, res) => {
 
-  let beerId = req.params.beerId;
+  let beerId = req.body.beerId;
 
-  if (!req.session.favorites) {
-    req.session.favorites = [];
-  }
-  //if(!req.session.favorites.includes(beerId)){
+  if(!req.session.favorites)
+    req.session.favorites=[];
 
-  req.session.favorites.push(parseInt(beerId));
-
-  res.redirect('/favorite');
-  //}
-
+  if(req.session.favorites.includes(parseInt(beerId))){
+    res.sendStatus(303);
+  }else{
+    req.session.favorites.push(parseInt(beerId));
+    res.sendStatus(200);
+  } 
 };
 
 exports.removeFromFavorite = (req, res) => {
 
   let beerId = req.body.beerId;
 
-  req.session.favorites.splice(req.session.favorites.indexOf(beerId), 1);
+  req.session.favorites.splice(req.session.favorites.indexOf(parseInt(beerId)), 1);
 
-  res.redirect('back');
-
-  /*res.render('shop/favorite',{
-
-    beers:req.session.favorites,
-
-    favorites_count:req.session.favorites.length,
-
-    pageTitle: 'My Favorites',
-
-    path:'/favorite'
-  });*/
+  res.sendStatus(200);
 }
 
 exports.getDetails = (req, res) => {
 
   let beerId=req.params.beerId;
 
-  //console.log(beerId);
-
   Request.get(API_URL+"/"+beerId, (error, response, data) => {
 
     if(error) {
         return console.log(error);
     }
-    //console.log(data);
     res.json(data);
   });
 }
@@ -145,6 +133,7 @@ exports.searchByName = (req,res) => {
 }
 
 exports.getRandomBeer =(req,res) => {
+  
   
   Request.get(API_URL+"/random", (error, response, data) => {
 
