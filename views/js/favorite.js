@@ -1,6 +1,3 @@
-/*var submitRemoveBeerForm = () => {
-  $('#removeBeerForm').submit();
-}*/
 $(document).ready(function () {
   loadFavorites();
 });
@@ -9,22 +6,24 @@ var appendToPage = (beers, clearFist) => {
 
   let count = beers.length;
 
-  if(!count > 0){
+  if (!count > 0) {
     $("#info").show();
-  }else{
+  } else {
     $("#info").hide();
   }
 
   if (clearFist) {
     $(".grid").empty();
   }
-
-
   for (let i = 0; i < count; i++) {
 
     let beer = beers[i];
 
-    let content = FAVORITE_BOX;
+    let content = BEER_BOX;
+
+    content = content.replace("{beer_css_class}", IS_FAVORITE_CSS_CLASS);
+
+    content = content.replace("{beer_function_name}", IS_FAVORITE_FUNCTION);
 
     content = content.replace("{beer_id}", beer.id);
 
@@ -58,22 +57,24 @@ var loadFavorites = () => {
 
         let beers = JSON.parse(data.responseJSON);
 
-        appendToPage(beers,true);
+        appendToPage(beers, true);
 
         $("#beer-loader").hide();
       }
-      
+
     }
   });
 }
 
-var addToFavorite = (beerId) => {
+var removeFromFavorite = (beerId) => {
 
   $.ajax({
 
-    url: '/add-to-favorite/'+beerId,
+    url: '/remove-from-favorite',
 
-    type: 'get',
+    type: 'post',
+
+    data: { beerId: beerId },
 
     beforeSend: function () {
 
@@ -83,14 +84,9 @@ var addToFavorite = (beerId) => {
     },
     complete: function (data) {
 
-      if (typeof data.responseJSON !== "undefined") {
+      $("#beer-loader").hide();
 
-        let beers = JSON.parse(data.responseJSON);
-
-        appendToPage(beers, true);
-
-        $("#beer-loader").hide();
-      }
+      loadFavorites();
     }
   });
 }
